@@ -115,7 +115,7 @@ export default function Products() {
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{product.id}</td>
                       <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                        <Link href={`/dashboard/editProduct/${product.id}`} className="text-indigo-600 hover:text-indigo-900">
+                        <Link href={`/dashboard/editOrder/${product.id}`} className="text-indigo-600 hover:text-indigo-900">
                           Editar
                         </Link>
                         <span className="text-indigo-600 hover:text-indigo-900">&nbsp;|&nbsp;</span>

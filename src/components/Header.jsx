@@ -5,9 +5,11 @@ import { Disclosure, Menu, Transition } from '@headlessui/react';
 import { BellIcon, MenuIcon, XIcon } from '@heroicons/react/outline';
 
 const navigation = [
-  { name: 'Dashboard', href: '#', current: true },
+  { name: 'Dashboard', href: '/dashboard/', current: true },
   { name: 'Productos', href: '/dashboard/products/', current: false },
-  { name: 'Ventas', href: '#', current: false },
+  { name: 'Categorias', href: '/dashboard/categories/', current: false },
+  { name: 'Usuarios', href: '/dashboard/users/', current: false },
+  { name: 'Pedidos', href: '/dashboard/orders/', current: false },
 ];
 const userNavigation = [
   { name: 'Your Profile', href: '#' },
@@ -26,6 +28,8 @@ export default function Header() {
     email: auth?.user?.email,
     imageUrl: `https://ui-avatars.com/api/?name=${auth?.user?.name}&background=random&color=random`,
   };
+  // si el usuario esta autenticado
+  console.log(auth);
   return (
     <>
       <Disclosure as="nav" className="bg-gray-800">
@@ -35,7 +39,9 @@ export default function Header() {
               <div className="flex items-center justify-between h-16">
                 <div className="flex items-center">
                   <div className="flex-shrink-0">
-                    <img className="h-8 w-8" src="https://tailwindui.com/img/logos/workflow-mark-indigo-500.svg" alt="Workflow" />
+                    <a href="/">
+                      <img className="h-8 w-8" src="https://tailwindui.com/img/logos/workflow-mark-indigo-500.svg" alt="Workflow" />
+                    </a>
                   </div>
                   <div className="hidden md:block">
                     <div className="ml-10 flex items-baseline space-x-4">
