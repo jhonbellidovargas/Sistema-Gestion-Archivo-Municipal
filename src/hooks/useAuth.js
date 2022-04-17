@@ -17,25 +17,28 @@ export const useAuth = () => {
 function useProvideAuth() {
   const [user, setUser] = useState(null);
 
-  const signIn = async (email, password) => {
+  const signIn = async (username, password) => {
     const options = {
       Headers: {
         accept: '*/*',
         'Content-Type': 'application/json',
       },
     };
-    const { data: access_token } = await axios.post(endPoints.auth.login, { email, password }, options);
-    //console.log(access_token);
+    console.log(username, password);
+    const { data } = await axios.post(endPoints.auth.login, { username, password }, options);
+    console.log(data.token);
+    console.log(data.user.id);
+    const id = data.user.id;
     // si existe el token crramos la cookie
-    if (access_token) {
-      const token = access_token.access_token;
+    if (data.token) {
+      const token = data.token;
       Cookie.set('token', token, { expires: 5 });
 
       // enviamos el token a la api para que nos devuelva el usuario
       axios.defaults.headers.Authorization = `Bearer ${token}`;
-      const { data: user } = await axios.get(endPoints.auth.profile);
+      const { data: user } = await axios.get(endPoints.products.getProduct(id));
       setUser(user);
-      //console.log(user);
+      console.log(user);
     }
   };
   const logout = () => {

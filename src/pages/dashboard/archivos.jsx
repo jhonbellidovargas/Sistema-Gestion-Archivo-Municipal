@@ -4,35 +4,35 @@ import { PlusIcon, XCircleIcon } from '@heroicons/react/solid';
 import axios from 'axios';
 
 import Modal from '@common/Modal';
-import FormProduct from '@components/FormProduct';
 import endPoints from '@services/api';
-import { deleteProduct } from '@services/api/products';
+import { deleteArchivo } from '@services/api/archivos';
 import useAlert from '@hooks/useAlert';
 import Alert from '@common/Alert';
+import FormArchivo from '@components/FormArchivo';
 
-export default function Products() {
+export default function Archivos() {
   const [open, setOpen] = useState(false);
-  const [products, setProducts] = useState([]);
+  const [archivos, setArchivos] = useState([]);
   const { alert, setAlert, toggleAlert } = useAlert();
 
   useEffect(() => {
-    async function getProducts() {
-      const response = await axios.get(endPoints.products.allproducts);
-      setProducts(response.data);
+    async function getArchivos() {
+      const response = await axios.get(endPoints.archivos.allArchivos);
+      setArchivos(response.data);
     }
     try {
-      getProducts();
+      getArchivos();
     } catch (error) {
       console.log(error);
     }
   }, [alert]);
 
   const handleDelete = (id) => {
-    deleteProduct(id)
+    deleteArchivo(id)
       .then(() => {
         setAlert({
           active: true,
-          message: 'Producto Eliminado!',
+          message: 'Archivo Eliminado!',
           type: 'success',
           autoClose: false,
         });
@@ -46,13 +46,14 @@ export default function Products() {
         });
       });
   };
+  console.log(archivos);
 
   return (
     <>
       <Alert alert={alert} handleClose={toggleAlert} />
       <div className="lg:flex lg:items-center lg:justify-between mb-8">
         <div className="flex-1 min-w-0">
-          <h2 className="text-2xl font-bold leading-7 text-gray-900 sm:text-3xl sm:truncate">List of Products</h2>
+          <h2 className="text-2xl font-bold leading-7 text-gray-900 sm:text-3xl sm:truncate">Lista de Archivos</h2>
         </div>
         <div className="mt-5 flex lg:mt-0 lg:ml-4">
           <span className="sm:ml-3">
@@ -62,7 +63,7 @@ export default function Products() {
               onClick={() => setOpen(true)}
             >
               <PlusIcon className="-ml-1 mr-2 h-5 w-5" aria-hidden="true" />
-              Add Product
+              Agregar Archivo
             </button>
           </span>
         </div>
@@ -78,13 +79,25 @@ export default function Products() {
                       Nombre
                     </th>
                     <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      Categoria
+                      Area
                     </th>
                     <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      Precio
+                      Folio
                     </th>
                     <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      Id
+                      Año
+                    </th>
+                    <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Estado
+                    </th>
+                    <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Tipo
+                    </th>
+                    <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Ubicación
+                    </th>
+                    <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Observacion
                     </th>
                     <th scope="col" className="relative px-6 py-3">
                       <span className="sr-only">Editar</span>
@@ -95,31 +108,39 @@ export default function Products() {
                   </tr>
                 </thead>
                 <tbody className="bg-white divide-y divide-gray-200">
-                  {products?.map((product) => (
-                    <tr key={`Product-item-${product.id}`}>
+                  {archivos?.map((archivo) => (
+                    <tr key={`archivo-item-${archivo.titulo}`}>
                       <td className="px-6 py-4 whitespace-nowrap">
-                        <div className="flex items-center">
-                          <div className="flex-shrink-0 h-10 w-10">
-                            <img className="h-10 w-10 rounded-full" src={product.images[0]} alt={product.name} />
-                          </div>
-                          <div className="ml-4">
-                            <div className="text-sm font-medium text-gray-900">{product.title}</div>
-                          </div>
-                        </div>
+                        <div className="text-sm text-gray-900">{archivo.titulo}</div>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
-                        <div className="text-sm text-gray-900">{product.category.name}</div>
+                        <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">{archivo.area.nombre}</span>
                       </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{archivo.folio}</td>
                       <td className="px-6 py-4 whitespace-nowrap">
-                        <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">{product.price}</span>
+                        <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">{archivo.año}</span>
                       </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{product.id}</td>
+                      {archivo.estado.nombre === 'Bueno' ? (
+                        <td className="px-6 py-4 whitespace-nowrap">
+                          <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">{archivo.estado.nombre}</span>
+                        </td>
+                      ) : (
+                        <td className="px-6 py-4 whitespace-nowrap">
+                          <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">{archivo.estado.nombre}</span>
+                        </td>
+                      )}
+
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        <div className="text-sm text-gray-900">{archivo.tipo.nombre}</div>
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{archivo.ubicacion}</td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{archivo.observacion}</td>
                       <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                        <Link href={`/dashboard/editProduct/${product.id}`} className="text-indigo-600 hover:text-indigo-900">
-                          Editar
+                        <Link href={`/dashboard/editArchivo/${archivo.id}`} className="text-indigo-600 hover:text-indigo-900">
+                          Editar ✏
                         </Link>
                         <span className="text-indigo-600 hover:text-indigo-900">&nbsp;|&nbsp;</span>
-                        <XCircleIcon className="flex-shrink-0 h-6 w-6 text-gray-400 cursor-pointer inline" aria-hidden="true" onClick={() => handleDelete(product.id)} />
+                        <XCircleIcon className="flex-shrink-0 h-6 w-6 text-red-400 cursor-pointer inline" aria-hidden="true" onClick={() => handleDelete(archivo.id)} />
                       </td>
                     </tr>
                   ))}
@@ -130,7 +151,7 @@ export default function Products() {
         </div>
       </div>
       <Modal open={open} setOpen={setOpen}>
-        <FormProduct setOpen={setOpen} setAlert={setAlert} />
+        <FormArchivo id="2" setOpen={setOpen} setAlert={setAlert} />
       </Modal>
     </>
   );

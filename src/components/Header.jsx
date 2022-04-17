@@ -6,13 +6,16 @@ import { BellIcon, MenuIcon, XIcon } from '@heroicons/react/outline';
 
 const navigation = [
   { name: 'Dashboard', href: '/dashboard/', current: true },
-  { name: 'Productos', href: '/dashboard/products/', current: false },
-  { name: 'Categorias', href: '/dashboard/categories/', current: false },
-  { name: 'Usuarios', href: '/dashboard/users/', current: false },
-  { name: 'Pedidos', href: '/dashboard/orders/', current: false },
+  { name: 'Archivos', href: '/dashboard/archivos/', current: false },
+  { name: 'Prestamos', href: '/dashboard/prestamos/', current: false },
+  { name: 'Trabajadores', href: '/dashboard/trabajadores/', current: false },
+  { name: 'Areas', href: '/dashboard/areas/', current: false },
+  { name: 'Gerencias', href: '/dashboard/gerencias/', current: false },
+  { name: 'Locales', href: '/dashboard/locales/', current: false },
+  { name: 'Usuarios', href: '/dashboard/usuarios/', current: false },
 ];
 const userNavigation = [
-  { name: 'Your Profile', href: '#' },
+  { name: 'Mi Perfil', href: '/dashboard/perfil/' },
   { name: 'Settings', href: '#' },
 ];
 

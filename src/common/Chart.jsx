@@ -11,15 +11,12 @@ export const Chart = ({ chartData }) => {
         options={{
           title: {
             display: true,
-            text: 'Category',
+            text: 'Areas por archivo',
             fontSize: 20,
           },
-          plugins: {
-            legend: {
-              text: 'Category',
-              display: true,
-              position: 'right',
-            },
+          legend: {
+            display: true,
+            position: 'right',
           },
         }}
       />

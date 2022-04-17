@@ -1,5 +1,5 @@
 {
-  "name": "react-shop-admin",
+  "name": "sistema-de-gestion-de-archivo-municipal",
   "private": true,
   "scripts": {
     "dev": "next dev",
