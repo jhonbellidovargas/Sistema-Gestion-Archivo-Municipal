@@ -8,7 +8,8 @@
             "@layout/*": ["layout/*"],
             "@hooks/*": ["hooks/*"],
             "@services/*": ["services/*"],
-            "@images/*": ["images/*"],
+            "@icons/*": ["assets/icons/*"],
+            "@logos/*": ["assets/logos/*"],
         },
     }
 }

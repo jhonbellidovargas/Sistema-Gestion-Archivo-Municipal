@@ -6,7 +6,7 @@ export default function MainLayout({ children }) {
     <>
       <div className="min-h-full">
         <Header />
-        <Nav />
+        {/* <Nav /> */}
         <main>
           <div className="max-w-7xl mx-auto py-6 sm:px-6">{children}</div>
         </main>

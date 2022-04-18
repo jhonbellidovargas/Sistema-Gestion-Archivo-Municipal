@@ -3,7 +3,8 @@ import { Fragment } from 'react';
 import { useAuth } from '@hooks/useAuth';
 import { Disclosure, Menu, Transition } from '@headlessui/react';
 import { BellIcon, MenuIcon, XIcon } from '@heroicons/react/outline';
-
+import logo3 from '@logos/logo2.png';
+import Image from 'next/image';
 const navigation = [
   { name: 'Dashboard', href: '/dashboard/', current: true },
   { name: 'Archivos', href: '/dashboard/archivos/', current: false },
@@ -39,11 +40,13 @@ export default function Header() {
         {({ open }) => (
           <>
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-              <div className="flex items-center justify-between h-16">
+              <div className="flex items-center justify-between h-22">
                 <div className="flex items-center">
-                  <div className="flex-shrink-0">
-                    <a href="/">
-                      <img className="h-8 w-8" src="https://tailwindui.com/img/logos/workflow-mark-indigo-500.svg" alt="Workflow" />
+                  <div className="flex-shrink-0 place-content-center items-center content-center">
+                    <a href="/" className="flex-shrink-0">
+                      <div className="inline-grid justify-items-center items-center content-center	">
+                        <Image src={logo3} width={50} height={50} alt="logo" />
+                      </div>
                     </a>
                   </div>
                   <div className="hidden md:block">
