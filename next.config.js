@@ -4,14 +4,7 @@
 //     domains: ['tailwindui.com', 'images.unsplash.com'],
 //   },
 // };
-const withPWA = require('next-pwa');
-module.exports = withPWA({
-  pwa: {
-    dest: 'public',
-    register: true,
-    mode: 'production',
-    disable: false,
-  },
+module.exports = {
   reactStrictMode: true,
   images: {
     domains: ['tailwindui.com', 'images.unsplash.com', 'localhost:3000', 'placeimg.com'],
@@ -19,4 +12,4 @@ module.exports = withPWA({
   eslint: {
     ignoreDuringBuilds: true,
   },
-});
+};
