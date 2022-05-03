@@ -47,7 +47,16 @@ export default function Archivos() {
       });
   };
   console.log(archivos);
-
+  // si hay contenido en el buscador filtra los archivos segun el valor que se ingrese
+  const handleSearch = (e) => {
+    const value = e.target.value;
+    console.log(value);
+    const filteredArchivos = archivos.filter((archivo) => {
+      console.log(archivo);
+      return archivo.titulo.toLowerCase().includes(value.toLowerCase());
+    });
+    setArchivos(filteredArchivos);
+  };
   return (
     <>
       <Alert alert={alert} handleClose={toggleAlert} />
@@ -66,6 +75,35 @@ export default function Archivos() {
               Agregar Archivo
             </button>
           </span>
+        </div>
+      </div>
+      {/* input para filtrar archivos de nuestro hook por nombre segun escriba onchange*/}
+      <div className="bg-white overflow-hidden shadow rounded-lg">
+        <div className="px-4 py-4 sm:p-4">
+          <div className="flex items-center justify-between">
+            <div className="flex-1 min-w-0">
+              <div className="flex items-center">
+                <input
+                  className="form-input block w-full pl-8 sm:text-sm sm:leading-5 rounded-lg"
+                  placeholder="Buscar Archivo"
+                  onChange={(e) => {
+                    console.log(e.target.value);
+                    handleSearch(e);
+                  }}
+                />
+              </div>
+            </div>
+            <div className="ml-3 flex-shrink-0">
+              <span className="inline-flex rounded-md shadow-sm">
+                <button
+                  type="button"
+                  className="inline-flex items-center px-4 py-2 border border-transparent text-sm leading-5 font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-500 focus:outline-none focus:shadow-outline-indigo focus:border-indigo-700 active:bg-indigo-700 transition ease-in-out duration-150"
+                >
+                  Buscar
+                </button>
+              </span>
+            </div>
+          </div>
         </div>
       </div>
       <div className="flex flex-col">

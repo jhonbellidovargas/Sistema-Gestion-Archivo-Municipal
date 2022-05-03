@@ -3,7 +3,18 @@ import endPoints from '@services/api';
 import { Chart } from '@common/Chart';
 import { Chart2 } from '@common/Chart2';
 import { Chart3 } from '@common/Chart3';
+import { Grid } from '@material-ui/core';
+import { useTheme } from '@material-ui/core/styles';
+import ReportCard from '@components/ReportCard';
 import axios from 'axios';
+
+import TrendingUpIcon from '@material-ui/icons/TrendingUp';
+import TrendingDownIcon from '@material-ui/icons/TrendingDown';
+import BookTwoTone from '@material-ui/icons/BookTwoTone';
+import DescriptionTwoTone from '@material-ui/icons/DescriptionTwoTone';
+import ThumbUpAltTwoTone from '@material-ui/icons/ThumbUpAltTwoTone';
+import CalendarTodayTwoTone from '@material-ui/icons/CalendarTodayTwoTone';
+
 export default function Dashboard() {
   const [archivos, setArchivos] = useState([]);
   const [prestamos, setPrestamos] = useState([]);
@@ -98,8 +109,62 @@ export default function Dashboard() {
       },
     ],
   };
+  const gridSpacing = 3;
+  const theme = useTheme();
+
+  const archivosTotales = archivos?.length;
+  const archivosDelAnio = archivos?.filter((archivo) => archivo.año === new Date().getFullYear()).length;
+  const prestamosTotales = prestamos?.length;
+  // comparamos la fecha actual con la fecha de devolucion en una lista de prestamos
+  const prestamosVencidos = prestamos?.filter((prestamo) => {
+    // si el estado es devuelto, no se cuenta
+    if (prestamo.estado === 'devuelto') {
+      return false;
+    } else {
+      const fechaActual = new Date();
+      const fechaDevolucion = new Date(prestamo.fechaDevolucion);
+      return fechaActual > fechaDevolucion;
+    }
+  });
+  const prestamosVencidosTotales = prestamosVencidos?.length;
+  console.log(prestamosVencidosTotales);
   return (
     <>
+      <Grid item xs={12}>
+        <Grid container spacing={gridSpacing}>
+          <Grid item lg={3} sm={6} xs={12}>
+            <ReportCard
+              primary={archivosTotales}
+              secondary="Archivos Registrados"
+              color={theme.palette.warning.main}
+              footerData="En total"
+              iconPrimary={BookTwoTone}
+              iconSecondary={DescriptionTwoTone}
+            />
+          </Grid>
+          <Grid item lg={3} sm={6} xs={12}>
+            <ReportCard
+              primary={prestamosVencidosTotales}
+              secondary="Prestamos vencidos"
+              color={theme.palette.error.main}
+              footerData="Requiere comunicación con trabajador"
+              iconPrimary={CalendarTodayTwoTone}
+            />
+          </Grid>
+          <Grid item lg={3} sm={6} xs={12}>
+            <ReportCard
+              primary={prestamosTotales}
+              secondary="Prestamos en Total"
+              color={theme.palette.success.main}
+              footerData="Apartir del funcionamiento del sistema"
+              iconPrimary={DescriptionTwoTone}
+            />
+          </Grid>
+          <Grid item lg={3} sm={6} xs={12}>
+            <ReportCard primary={archivosDelAnio} secondary="Archivos de este año" color={theme.palette.primary.main} footerData="Archivadores del año" iconPrimary={ThumbUpAltTwoTone} />
+          </Grid>
+        </Grid>
+      </Grid>
       <div className="flex flex-col lg:flex-row">
         <div className="flex-1 p-5">
           <h3 className="text-center text-2xl font-bold mb-4 text-blue-900">Archivos según Area</h3>

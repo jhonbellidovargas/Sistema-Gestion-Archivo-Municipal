@@ -25,11 +25,6 @@ export default function FormArchivo({ setOpen, setAlert, archivo }) {
     event.preventDefault();
     const formData = new FormData(formRef.current);
     const data = {
-      // title: formData.get('title'),
-      // price: parseInt(formData.get('price')),
-      // description: formData.get('description'),
-      // categoryId: parseInt(formData.get('category')),
-      // images: [formData.get('images').name],
       titulo: formData.get('titulo'),
       año: parseInt(formData.get('año')),
       folio: formData.get('folio'),
