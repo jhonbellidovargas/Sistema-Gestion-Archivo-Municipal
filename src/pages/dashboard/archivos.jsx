@@ -13,12 +13,14 @@ import FormArchivo from '@components/FormArchivo';
 export default function Archivos() {
   const [open, setOpen] = useState(false);
   const [archivos, setArchivos] = useState([]);
-  const { alert, setAlert, toggleAlert } = useAlert();
+  const [archivosfil, setArchivosfil] = useState([]);
+  const { alert, setAlert, toggleAlert } = useAlert([]);
 
   useEffect(() => {
     async function getArchivos() {
       const response = await axios.get(endPoints.archivos.allArchivos);
       setArchivos(response.data);
+      setArchivosfil(archivos);
     }
     try {
       getArchivos();
@@ -50,12 +52,16 @@ export default function Archivos() {
   // si hay contenido en el buscador filtra los archivos segun el valor que se ingrese
   const handleSearch = (e) => {
     const value = e.target.value;
-    console.log(value);
-    const filteredArchivos = archivos.filter((archivo) => {
-      console.log(archivo);
-      return archivo.titulo.toLowerCase().includes(value.toLowerCase());
-    });
-    setArchivos(filteredArchivos);
+    if (value === '') {
+      setArchivosfil(archivos);
+    } else {
+      // console.log(value);
+      const filteredArchivos = archivosfil.filter((archivo) => {
+        console.log(archivo);
+        return archivo.titulo.toLowerCase().includes(value.toLowerCase());
+      });
+      setArchivosfil(filteredArchivos);
+    }
   };
   return (
     <>
@@ -146,7 +152,7 @@ export default function Archivos() {
                   </tr>
                 </thead>
                 <tbody className="bg-white divide-y divide-gray-200">
-                  {archivos?.map((archivo) => (
+                  {archivosfil?.map((archivo) => (
                     <tr key={`archivo-item-${archivo.titulo}`}>
                       <td className="px-6 py-4 whitespace-nowrap">
                         <div className="text-sm text-gray-900">{archivo.titulo}</div>

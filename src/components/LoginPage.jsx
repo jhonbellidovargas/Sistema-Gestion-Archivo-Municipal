@@ -19,8 +19,13 @@ export default function LoginPage() {
       .then(() => {
         router.push('/dashboard');
       })
+      .then(() => {
+        console.log('login');
+      })
       .catch((error) => {
         console.log(error);
+        // muestra de error de id mensajeError
+        document.getElementById('mensajeError').innerHTML = 'Usuario o contraseña incorrectos';
       });
   };
 
@@ -31,6 +36,9 @@ export default function LoginPage() {
           <div>
             <img className="mx-auto h-12 w-auto" src="https://tailwindui.com/img/logos/workflow-mark-indigo-600.svg" alt="Workflow" />
             <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">Iniciar Sesión</h2>
+          </div>
+          <div className="text-red-500 text-center">
+            <p id="mensajeError"></p>
           </div>
           <form className="mt-8 space-y-6" onSubmit={submitHandler}>
             <input type="hidden" name="remember" defaultValue="true" />

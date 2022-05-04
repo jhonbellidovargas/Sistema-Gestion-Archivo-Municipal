@@ -1,5 +1,5 @@
 /* This example requires Tailwind CSS v2.0+ */
-import { Fragment } from 'react';
+import { Fragment, useEffect } from 'react';
 import { useAuth } from '@hooks/useAuth';
 import { Disclosure, Menu, Transition } from '@headlessui/react';
 import { BellIcon, MenuIcon, XIcon } from '@heroicons/react/outline';
@@ -15,6 +15,7 @@ const navigation = [
   { name: 'Locales', href: '/dashboard/locales/', current: false },
   { name: 'Usuarios', href: '/dashboard/usuarios/', current: false },
 ];
+
 const userNavigation = [
   { name: 'Mi Perfil', href: '/dashboard/perfil/' },
   { name: 'Settings', href: '#' },
@@ -26,14 +27,14 @@ function classNames(...classes) {
 
 export default function Header() {
   const auth = useAuth();
-
+  console.log('sesion: ', auth);
   const userData = {
-    name: auth?.user?.name,
+    rol: auth?.user?.rol,
     email: auth?.user?.email,
-    imageUrl: `https://ui-avatars.com/api/?name=${auth?.user?.name}&background=random&color=random`,
+    imageUrl: `https://ui-avatars.com/api/?name=${auth?.user?.email}&background=random&color=random`,
   };
-  // si el usuario esta autenticado
-  console.log(auth);
+  
+
   return (
     <>
       <Disclosure as="nav" className="bg-gray-800">
