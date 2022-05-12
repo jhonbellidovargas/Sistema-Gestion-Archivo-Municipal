@@ -65,6 +65,7 @@ const endPoints = {
   archivos: {
     getArchivo: (id) => `${API}/api/${VERSION}/archivos/${id}/`,
     allArchivos: `${API}/api/${VERSION}/archivos/`,
+    limitArchivos: (limit, offset) => `${API}/api/${VERSION}/archivos?limit=${limit}&offset=${offset}`,
     addArchivo: `${API}/api/${VERSION}/archivos`,
     updateArchivo: (id) => `${API}/api/${VERSION}/archivos/${id}/`,
     deleteArchivo: (id) => `${API}/api/${VERSION}/archivos/${id}/`,

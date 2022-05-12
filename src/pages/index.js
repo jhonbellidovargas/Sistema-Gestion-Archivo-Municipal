@@ -1,6 +1,6 @@
 import muni from '@icons/muni.png';
 import Image from 'next/image';
-
+import { subirArchivos } from '../../subirArchivos';
 // const navigation = [
 //   { name: 'Product', href: '#' },
 //   { name: 'Features', href: '#' },

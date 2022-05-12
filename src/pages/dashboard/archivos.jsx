@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { PlusIcon, XCircleIcon } from '@heroicons/react/solid';
+import { PlusIcon } from '@heroicons/react/solid';
 import axios from 'axios';
+import useFetch from '@hooks/useFetch';
 
 import Modal from '@common/Modal';
 import endPoints from '@services/api';
@@ -9,25 +10,37 @@ import { deleteArchivo } from '@services/api/archivos';
 import useAlert from '@hooks/useAlert';
 import Alert from '@common/Alert';
 import FormArchivo from '@components/FormArchivo';
+import Paginate from '@components/Paginate';
+import Loading from '@common/Loading';
+import TableArchivo from '@components/TableArchivo';
+
+const PRODUCT_LIMIT = 8;
+const PRODUCT_OFFSET = 0;
 
 export default function Archivos() {
   const [open, setOpen] = useState(false);
   const [archivos, setArchivos] = useState([]);
   const [archivosfil, setArchivosfil] = useState([]);
+  const [loading, setLoading] = useState(false);
   const { alert, setAlert, toggleAlert } = useAlert([]);
+  const [offset, setOffset] = useState(PRODUCT_OFFSET);
+
+  const archivosLimit = useFetch(endPoints.archivos.limitArchivos(PRODUCT_LIMIT, offset));
 
   useEffect(() => {
+    setLoading(true);
     async function getArchivos() {
       const response = await axios.get(endPoints.archivos.allArchivos);
       setArchivos(response.data);
-      setArchivosfil(archivos);
+      setArchivosfil(archivosLimit);
     }
     try {
       getArchivos();
     } catch (error) {
       console.log(error);
     }
-  }, [alert]);
+    setLoading(false);
+  }, [archivosLimit]);
 
   const handleDelete = (id) => {
     deleteArchivo(id)
@@ -36,7 +49,7 @@ export default function Archivos() {
           active: true,
           message: 'Archivo Eliminado!',
           type: 'success',
-          autoClose: false,
+          autoClose: true,
         });
       })
       .catch((error) => {
@@ -48,155 +61,105 @@ export default function Archivos() {
         });
       });
   };
-  console.log(archivos);
+  //console.log(archivos);
   // si hay contenido en el buscador filtra los archivos segun el valor que se ingrese
-  const handleSearch = (e) => {
-    const value = e.target.value;
-    if (value === '') {
-      setArchivosfil(archivos);
+  const handleSearch = () => {
+    setArchivosfil([]);
+    setLoading(true);
+    // obtenemos el texto del input con id inputSearch
+    const inputSearch = document.getElementById('inputSearch');
+    const value = inputSearch.value;
+    const filteredArchivos = archivos.filter((archivo) => {
+      return archivo.titulo.toLowerCase().includes(value.toLowerCase());
+    });
+    console.log(filteredArchivos);
+    if (filteredArchivos.length == 0) {
+      setAlert({
+        active: true,
+        message: 'No se encontraron resultados',
+        type: 'warning',
+        autoClose: true,
+      });
+      setArchivosfil([]);
+      setArchivosfil(archivosLimit);
     } else {
-      // console.log(value);
-      const filteredArchivos = archivosfil.filter((archivo) => {
-        console.log(archivo);
-        return archivo.titulo.toLowerCase().includes(value.toLowerCase());
+      setAlert({
+        active: true,
+        message: `Se encontraron ${filteredArchivos.length} archivos`,
+        type: 'success',
+        autoClose: false,
       });
       setArchivosfil(filteredArchivos);
     }
+    setLoading(false);
   };
-  return (
-    <>
-      <Alert alert={alert} handleClose={toggleAlert} />
-      <div className="lg:flex lg:items-center lg:justify-between mb-8">
-        <div className="flex-1 min-w-0">
-          <h2 className="text-2xl font-bold leading-7 text-gray-900 sm:text-3xl sm:truncate">Lista de Archivos</h2>
+  if (loading == true) {
+    return <Loading />;
+  } else {
+    return (
+      <>
+        <Alert alert={alert} handleClose={toggleAlert} />
+        <div className="lg:flex lg:items-center lg:justify-between mb-8">
+          <div className="flex-1 min-w-0">
+            <h2 className="text-2xl font-bold leading-7 text-gray-900 sm:text-3xl sm:truncate">Lista de Archivos</h2>
+          </div>
+          <div className="mt-5 flex lg:mt-0 lg:ml-4">
+            <span className="sm:ml-3">
+              <button
+                type="button"
+                className="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                onClick={() => setOpen(true)}
+              >
+                <PlusIcon className="-ml-1 mr-2 h-5 w-5" aria-hidden="true" />
+                Agregar Archivo
+              </button>
+            </span>
+          </div>
         </div>
-        <div className="mt-5 flex lg:mt-0 lg:ml-4">
-          <span className="sm:ml-3">
-            <button
-              type="button"
-              className="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-              onClick={() => setOpen(true)}
-            >
-              <PlusIcon className="-ml-1 mr-2 h-5 w-5" aria-hidden="true" />
-              Agregar Archivo
-            </button>
-          </span>
-        </div>
-      </div>
-      {/* input para filtrar archivos de nuestro hook por nombre segun escriba onchange*/}
-      <div className="bg-white overflow-hidden shadow rounded-lg">
-        <div className="px-4 py-4 sm:p-4">
-          <div className="flex items-center justify-between">
-            <div className="flex-1 min-w-0">
-              <div className="flex items-center">
-                <input
-                  className="form-input block w-full pl-8 sm:text-sm sm:leading-5 rounded-lg"
-                  placeholder="Buscar Archivo"
-                  onChange={(e) => {
-                    console.log(e.target.value);
-                    handleSearch(e);
-                  }}
-                />
+        {/* input para filtrar archivos de nuestro hook por nombre segun escriba onchange*/}
+        <div className="bg-white overflow-hidden shadow rounded-lg">
+          <div className="px-4 py-4 sm:p-4">
+            <div className="flex items-center justify-between">
+              <div className="flex-1 min-w-0">
+                <div className="flex items-center">
+                  <input id="inputSearch" className="form-input block w-full pl-8 sm:text-sm sm:leading-5 rounded-lg" placeholder="Buscar Archivo" />
+                </div>
+              </div>
+              <div className="ml-3 flex-shrink-0">
+                <span className="inline-flex rounded-md shadow-sm">
+                  <button
+                    type="button"
+                    onClick={(e) => {
+                      console.log(e.target.value);
+                      handleSearch(e);
+                    }}
+                    className="inline-flex items-center px-4 py-2 border border-transparent text-sm leading-5 font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-500 focus:outline-none focus:shadow-outline-indigo focus:border-indigo-700 active:bg-indigo-700 transition ease-in-out duration-150"
+                  >
+                    Buscar
+                  </button>
+                  {/*  boton para cerrar busqueda */}
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setArchivosfil(archivosLimit);
+                      const inputSearch = document.getElementById('inputSearch');
+                      inputSearch.value = '';
+                    }}
+                    className="inline-flex items-center px-4 py-2 text-sm leading-5 font-medium text-white focus:outline-none focus:shadow-outline-indigo focus:border-indigo-700 active:bg-indigo-700 transition ease-in-out duration-150"
+                  >
+                    ❌
+                  </button>
+                </span>
               </div>
             </div>
-            <div className="ml-3 flex-shrink-0">
-              <span className="inline-flex rounded-md shadow-sm">
-                <button
-                  type="button"
-                  className="inline-flex items-center px-4 py-2 border border-transparent text-sm leading-5 font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-500 focus:outline-none focus:shadow-outline-indigo focus:border-indigo-700 active:bg-indigo-700 transition ease-in-out duration-150"
-                >
-                  Buscar
-                </button>
-              </span>
-            </div>
           </div>
         </div>
-      </div>
-      <div className="flex flex-col">
-        <div className="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
-          <div className="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
-            <div className="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
-              <table className="min-w-full divide-y divide-gray-200">
-                <thead className="bg-gray-50">
-                  <tr>
-                    <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      Nombre
-                    </th>
-                    <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      Area
-                    </th>
-                    <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      Folio
-                    </th>
-                    <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      Año
-                    </th>
-                    <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      Estado
-                    </th>
-                    <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      Tipo
-                    </th>
-                    <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      Ubicación
-                    </th>
-                    <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      Observacion
-                    </th>
-                    <th scope="col" className="relative px-6 py-3">
-                      <span className="sr-only">Editar</span>
-                    </th>
-                    <th scope="col" className="relative px-6 py-3">
-                      <span className="sr-only">Eliminar</span>
-                    </th>
-                  </tr>
-                </thead>
-                <tbody className="bg-white divide-y divide-gray-200">
-                  {archivosfil?.map((archivo) => (
-                    <tr key={`archivo-item-${archivo.titulo}`}>
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        <div className="text-sm text-gray-900">{archivo.titulo}</div>
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">{archivo.area.nombre}</span>
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{archivo.folio}</td>
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">{archivo.año}</span>
-                      </td>
-                      {archivo.estado.nombre === 'Bueno' ? (
-                        <td className="px-6 py-4 whitespace-nowrap">
-                          <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">{archivo.estado.nombre}</span>
-                        </td>
-                      ) : (
-                        <td className="px-6 py-4 whitespace-nowrap">
-                          <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">{archivo.estado.nombre}</span>
-                        </td>
-                      )}
-
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        <div className="text-sm text-gray-900">{archivo.tipo.nombre}</div>
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{archivo.ubicacion}</td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{archivo.observacion}</td>
-                      <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                        <Link href={`/dashboard/editArchivo/${archivo.id}`} className="text-indigo-600 hover:text-indigo-900">
-                          Editar ✏
-                        </Link>
-                        <span className="text-indigo-600 hover:text-indigo-900">&nbsp;|&nbsp;</span>
-                        <XCircleIcon className="flex-shrink-0 h-6 w-6 text-red-400 cursor-pointer inline" aria-hidden="true" onClick={() => handleDelete(archivo.id)} />
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
-      </div>
-      <Modal open={open} setOpen={setOpen}>
-        <FormArchivo id="2" setOpen={setOpen} setAlert={setAlert} />
-      </Modal>
-    </>
-  );
+        <TableArchivo archivos={archivosfil} handleDelete={handleDelete} setsetAlert={setAlert} />
+        <Paginate offset={offset} setOffset={setOffset} />
+        <Modal open={open} setOpen={setOpen}>
+          <FormArchivo id="2" setOpen={setOpen} setAlert={setAlert} />
+        </Modal>
+      </>
+    );
+  }
 }

@@ -107,7 +107,7 @@ export default function Prestamos() {
                 <tbody className="bg-white divide-y divide-gray-200">
                   {prestamos?.map((prestamo) => (
                     <tr key={`prestamo-item-${prestamo?.archivo?.titulo}`}>
-                      <td className="px-6 py-4 whitespace-nowrap">
+                      <td className="w-72	px-6 py-4">
                         <div className="text-sm text-gray-900">{prestamo?.archivo?.titulo}</div>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
