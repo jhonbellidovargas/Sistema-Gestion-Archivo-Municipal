@@ -17,7 +17,8 @@ export default function LoginPage() {
     auth
       .signIn(username, password)
       .then(() => {
-        window.location.href = '/dashboard';
+        router.push('/dashboard');
+        //window.location.href = '/dashboard';
       })
       .then(() => {
         console.log('login');

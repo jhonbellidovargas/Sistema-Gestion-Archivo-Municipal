@@ -3,6 +3,8 @@ import Cookie from 'js-cookie';
 import axios from 'axios';
 import endPoints from '@services/api/';
 
+import { UsuarioContext } from '@hooks/TodoContext/';
+
 const AuthContext = createContext();
 
 export function ProviderAuth({ children }) {
@@ -16,6 +18,8 @@ export const useAuth = () => {
 
 function useProvideAuth() {
   const [user, setUser] = useState(null);
+  const { user:usuario, setUser:setUsuario } = React.useContext(UsuarioContext);
+
 
   const signIn = async (username, password) => {
     const options = {
@@ -41,6 +45,7 @@ function useProvideAuth() {
       axios.defaults.headers.Authorization = `Bearer ${token}`;
       const { data: user } = await axios.get(endPoints.usuarios.getUsuario(id));
       setUser(user);
+      setUsuario(user);
     }
   };
   const logout = () => {

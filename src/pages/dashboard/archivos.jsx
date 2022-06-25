@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import Link from 'next/link';
 import { PlusIcon } from '@heroicons/react/solid';
 import axios from 'axios';
 import useFetch from '@hooks/useFetch';
@@ -14,21 +13,20 @@ import Paginate from '@components/Paginate';
 import Loading from '@common/Loading';
 import TableArchivo from '@components/TableArchivo';
 
-const PRODUCT_LIMIT = 8;
+const PRODUCT_LIMIT = 5;
 const PRODUCT_OFFSET = 0;
 
 export default function Archivos() {
   const [open, setOpen] = useState(false);
   const [archivos, setArchivos] = useState([]);
   const [archivosfil, setArchivosfil] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const { alert, setAlert, toggleAlert } = useAlert([]);
   const [offset, setOffset] = useState(PRODUCT_OFFSET);
 
   const archivosLimit = useFetch(endPoints.archivos.limitArchivos(PRODUCT_LIMIT, offset));
 
   useEffect(() => {
-    setLoading(true);
     async function getArchivos() {
       const response = await axios.get(endPoints.archivos.allArchivos);
       setArchivos(response.data);
@@ -65,7 +63,6 @@ export default function Archivos() {
   // si hay contenido en el buscador filtra los archivos segun el valor que se ingrese
   const handleSearch = () => {
     setArchivosfil([]);
-    setLoading(true);
     // obtenemos el texto del input con id inputSearch
     const inputSearch = document.getElementById('inputSearch');
     const value = inputSearch.value;
@@ -87,13 +84,12 @@ export default function Archivos() {
         active: true,
         message: `Se encontraron ${filteredArchivos.length} archivos`,
         type: 'success',
-        autoClose: false,
+        autoClose: true,
       });
       setArchivosfil(filteredArchivos);
     }
-    setLoading(false);
   };
-  if (loading == true) {
+  if (loading) {
     return <Loading />;
   } else {
     return (
