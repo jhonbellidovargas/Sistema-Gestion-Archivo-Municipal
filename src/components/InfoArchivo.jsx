@@ -10,7 +10,7 @@ export default function FormArchivo({ archivo, handleDelete, archivoPrestar, set
   return (
     <div>
       <div>
-        <div className="bg-white shadow overflow-hidden sm:rounded-lg">
+        <div className="p-0 bg-white shadow overflow-hidden sm:rounded-lg">
           <div className="px-1 py-1 sm:px-2">
             <h5 className="text-md leading-6 font-medium text-gray-900">{archivo.titulo}</h5>
             {/* un contenedor con 2 contenedores uno a la izquierza y otro a la derecha */}
