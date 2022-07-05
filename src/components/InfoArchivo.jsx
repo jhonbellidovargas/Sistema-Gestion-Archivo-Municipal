@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import EstadoStar from '@components/EstadoStar';
 import FormPrestamo from '@components/FormPrestamo';
 

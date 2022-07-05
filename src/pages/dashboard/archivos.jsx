@@ -185,7 +185,15 @@ export default function Archivos() {
           />
         </Modal2>
         <Modal open={openInfoModal} setOpen={setOpenInfoModal}>
-          <InfoArchivo id={archivoSel.id} archivoPrestar={archivoPrestar} setArchivoPrestar={setArchivoPrestar} handleDelete={handleDelete} archivo={archivoSel} setOpen={setOpen} setAlert={setAlert} />
+          <InfoArchivo
+            id={archivoSel.id}
+            archivoPrestar={archivoPrestar}
+            setArchivoPrestar={setArchivoPrestar}
+            handleDelete={handleDelete}
+            archivo={archivoSel}
+            setOpen={setOpen}
+            setAlert={setAlert}
+          />
         </Modal>
       </>
     );
