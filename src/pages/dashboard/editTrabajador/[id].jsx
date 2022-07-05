@@ -11,15 +11,15 @@ export default function Edit() {
 
   useEffect(() => {
     const { id } = router.query;
-    console.log(id);
+    // console.log(id);
     // para que consulte si ya tenemos el id en el router
     if (!router.isReady) return;
     async function getArchivo() {
-      console.log('getArchivo', id);
+      // console.log('getArchivo', id);
       const response = await axios.get(endPoints.trabajadores.getTrabajador(id));
-      console.log(response);
+      // console.log(response);
       setTrabajador(response.data);
-      console.log(response.data);
+      // console.log(response.data);
     }
     getArchivo();
   }, [router?.isReady]);

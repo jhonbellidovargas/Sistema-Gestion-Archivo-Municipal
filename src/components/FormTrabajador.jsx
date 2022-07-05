@@ -71,13 +71,17 @@ export default function FormTrabajador({ setOpen, setAlert, trabajador }) {
               <label htmlFor="dni" className="block text-sm font-medium text-gray-700">
                 DNI
               </label>
-              <input
-                defaultValue={trabajador?.dni}
-                type="number"
-                name="dni"
-                id="dni"
-                className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
-              />
+              {trabajador ? (
+                <label className="mt-4 block text-sm font-medium text-black-700">{trabajador?.dni}</label>
+              ) : (
+                <input
+                  defaultValue={trabajador?.dni}
+                  type="number"
+                  name="dni"
+                  id="dni"
+                  className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                />
+              )}
             </div>
             <div className="col-span-6 sm:col-span-3">
               <label htmlFor="nombre" className="block text-sm font-medium text-gray-700">
@@ -151,7 +155,7 @@ export default function FormTrabajador({ setOpen, setAlert, trabajador }) {
                 className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
               />
             </div>
-            <div className="col-span-6">
+            <div className="col-span-6 sm:col-span-3">
               <label htmlFor="idArea" className="block text-sm font-medium text-gray-700">
                 Area
               </label>

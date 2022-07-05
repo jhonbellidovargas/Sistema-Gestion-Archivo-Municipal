@@ -148,9 +148,9 @@ export default function Header() {
                           leaveFrom="transform opacity-100 scale-100"
                           leaveTo="transform opacity-0 scale-95"
                         >
-                          <Menu.Items className="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none">
-                            <button onClick={() => auth.logout()} className="block px-4 py-2 text-sm text-gray-700">
-                              Logout
+                          <Menu.Items className="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none z-10">
+                            <button onClick={() => auth.logout()} className="block px-4 py-2 text-sm text-gray-700 z-2">
+                              Cerrar Sesión
                             </button>
                           </Menu.Items>
                         </Transition>

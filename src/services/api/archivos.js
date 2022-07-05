@@ -13,7 +13,11 @@ const addArchivo = async (body) => {
 };
 
 const deleteArchivo = async (id) => {
+  //console.log(id + ' tipo: ' + id.type);
+  // cast to int
+  //const idArchivo
   const response = await axios.delete(endPoints.archivos.deleteArchivo(id));
+  // console.log(response.data);
   return response.data;
 };
 

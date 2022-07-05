@@ -1,6 +1,8 @@
 import muni from '@icons/muni.png';
+import React from 'react';
 import Image from 'next/image';
-import { subirArchivos } from '../../subirArchivos';
+import { UsuarioContext } from '@hooks/TodoContext/';
+
 // const navigation = [
 //   { name: 'Product', href: '#' },
 //   { name: 'Features', href: '#' },
@@ -8,6 +10,7 @@ import { subirArchivos } from '../../subirArchivos';
 //   { name: 'Company', href: '#' },
 // ];
 export default function Home() {
+  const { user } = React.useContext(UsuarioContext);
   return (
     <div className="relative bg-white overflow-hidden">
       <div className="max-w-7xl mx-auto">
@@ -30,14 +33,16 @@ export default function Home() {
                 Gestiona Archivos, Prestamos de Documentos, Registra trabajadores, Oficinas, Areas y Gerencias
               </p>
               <div className="mt-5 sm:mt-8 sm:flex sm:justify-center lg:justify-center">
-                <div className="rounded-md shadow">
-                  <a
-                    href="/login"
-                    className="w-full flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 md:py-4 md:text-lg md:px-10"
-                  >
-                    Ingresa
-                  </a>
-                </div>
+                {!user && (
+                  <div className="rounded-md shadow">
+                    <a
+                      href="/login"
+                      className="w-full flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 md:py-4 md:text-lg md:px-10"
+                    >
+                      Ingresa
+                    </a>
+                  </div>
+                )}
               </div>
             </div>
           </main>

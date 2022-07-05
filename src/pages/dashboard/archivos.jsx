@@ -1,14 +1,16 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { PlusIcon } from '@heroicons/react/solid';
 import axios from 'axios';
 import useFetch from '@hooks/useFetch';
 
 import Modal from '@common/Modal';
+import Modal2 from '@common/Modal2';
 import endPoints from '@services/api';
 import { deleteArchivo } from '@services/api/archivos';
 import useAlert from '@hooks/useAlert';
 import Alert from '@common/Alert';
 import FormArchivo from '@components/FormArchivo';
+import InfoArchivo from '@components/InfoArchivo';
 import Paginate from '@components/Paginate';
 import Loading from '@common/Loading';
 import TableArchivo from '@components/TableArchivo';
@@ -18,11 +20,16 @@ const PRODUCT_OFFSET = 0;
 
 export default function Archivos() {
   const [open, setOpen] = useState(false);
+  const [openSearchModal, setOpenSearchModal] = useState(false);
+  const [openInfoModal, setOpenInfoModal] = useState(false);
+  const [archivoPrestar, setArchivoPrestar] = useState({});
+  const [archivoSel, setArchivoSel] = useState({});
   const [archivos, setArchivos] = useState([]);
   const [archivosfil, setArchivosfil] = useState([]);
   const [loading, setLoading] = useState(true);
   const { alert, setAlert, toggleAlert } = useAlert([]);
   const [offset, setOffset] = useState(PRODUCT_OFFSET);
+  const [searchValue, setSearchValue] = React.useState('');
 
   const archivosLimit = useFetch(endPoints.archivos.limitArchivos(PRODUCT_LIMIT, offset));
 
@@ -30,19 +37,28 @@ export default function Archivos() {
     async function getArchivos() {
       const response = await axios.get(endPoints.archivos.allArchivos);
       setArchivos(response.data);
-      setArchivosfil(archivosLimit);
+      // setArchivosfil(archivosLimit);
     }
     try {
       getArchivos();
     } catch (error) {
-      console.log(error);
+      //console.log(error);
     }
     setLoading(false);
   }, [archivosLimit]);
 
+  const onSearchValueChange = (event) => {
+    setSearchValue(event.target.value);
+    //console.log(searchValue);
+  };
+
+  let searchedArchivos = [];
+  //console.log(searchedArchivos);
+
   const handleDelete = (id) => {
     deleteArchivo(id)
       .then(() => {
+        setOpenInfoModal(false);
         setAlert({
           active: true,
           message: 'Archivo Eliminado!',
@@ -62,33 +78,29 @@ export default function Archivos() {
   //console.log(archivos);
   // si hay contenido en el buscador filtra los archivos segun el valor que se ingrese
   const handleSearch = () => {
-    setArchivosfil([]);
-    // obtenemos el texto del input con id inputSearch
-    const inputSearch = document.getElementById('inputSearch');
-    const value = inputSearch.value;
-    const filteredArchivos = archivos.filter((archivo) => {
-      return archivo.titulo.toLowerCase().includes(value.toLowerCase());
+    searchedArchivos = archivos.filter((archivo) => {
+      const archivoText = archivo.titulo.toLowerCase();
+      const searchText = searchValue.toLowerCase();
+      return archivoText.includes(searchText);
     });
-    console.log(filteredArchivos);
-    if (filteredArchivos.length == 0) {
-      setAlert({
-        active: true,
-        message: 'No se encontraron resultados',
-        type: 'warning',
-        autoClose: true,
-      });
-      setArchivosfil([]);
-      setArchivosfil(archivosLimit);
-    } else {
-      setAlert({
-        active: true,
-        message: `Se encontraron ${filteredArchivos.length} archivos`,
-        type: 'success',
-        autoClose: true,
-      });
-      setArchivosfil(filteredArchivos);
-    }
+    console.log(searchedArchivos);
+    setArchivosfil(searchedArchivos);
+    setOpenSearchModal(true);
   };
+
+  const handleCleanClick = () => {
+    const inputSearch = document.getElementById('inputSearch');
+    inputSearch.value = '';
+    setArchivosfil(archivos);
+  };
+
+  const handleInfoClick = (archivo) => {
+    console.log(archivo);
+    setArchivoSel(archivo);
+    //setOpenSearchModal(false);
+    setOpenInfoModal(true);
+  };
+
   if (loading) {
     return <Loading />;
   } else {
@@ -118,7 +130,7 @@ export default function Archivos() {
             <div className="flex items-center justify-between">
               <div className="flex-1 min-w-0">
                 <div className="flex items-center">
-                  <input id="inputSearch" className="form-input block w-full pl-8 sm:text-sm sm:leading-5 rounded-lg" placeholder="Buscar Archivo" />
+                  <input id="inputSearch" onChange={onSearchValueChange} className="form-input block w-full pl-8 sm:text-sm sm:leading-5 rounded-lg" placeholder="Buscar Archivo" />
                 </div>
               </div>
               <div className="ml-3 flex-shrink-0">
@@ -137,9 +149,7 @@ export default function Archivos() {
                   <button
                     type="button"
                     onClick={() => {
-                      setArchivosfil(archivosLimit);
-                      const inputSearch = document.getElementById('inputSearch');
-                      inputSearch.value = '';
+                      handleCleanClick();
                     }}
                     className="inline-flex items-center px-4 py-2 text-sm leading-5 font-medium text-white focus:outline-none focus:shadow-outline-indigo focus:border-indigo-700 active:bg-indigo-700 transition ease-in-out duration-150"
                   >
@@ -150,10 +160,32 @@ export default function Archivos() {
             </div>
           </div>
         </div>
-        <TableArchivo archivos={archivosfil} handleDelete={handleDelete} setsetAlert={setAlert} />
+        <TableArchivo
+          archivoPrestar={archivoPrestar}
+          setArchivoPrestar={setArchivoPrestar}
+          archivos={archivosLimit}
+          handleDelete={handleDelete}
+          setAlert={setAlert}
+          handleInfoClick={handleInfoClick}
+        />
         <Paginate offset={offset} setOffset={setOffset} />
         <Modal open={open} setOpen={setOpen}>
-          <FormArchivo id="2" setOpen={setOpen} setAlert={setAlert} />
+          <FormArchivo id="1" setOpen={setOpen} setAlert={setAlert} />
+        </Modal>
+        <Modal2 open={openSearchModal} setOpen={setOpenSearchModal}>
+          <TableArchivo
+            id="2"
+            archivoPrestar={archivoPrestar}
+            setArchivoPrestar={setArchivoPrestar}
+            archivos={archivosfil}
+            handleDelete={handleDelete}
+            handleInfoClick={handleInfoClick}
+            setOpen={setOpenSearchModal}
+            setAlert={setAlert}
+          />
+        </Modal2>
+        <Modal open={openInfoModal} setOpen={setOpenInfoModal}>
+          <InfoArchivo id={archivoSel.id} archivoPrestar={archivoPrestar} setArchivoPrestar={setArchivoPrestar} handleDelete={handleDelete} archivo={archivoSel} setOpen={setOpen} setAlert={setAlert} />
         </Modal>
       </>
     );

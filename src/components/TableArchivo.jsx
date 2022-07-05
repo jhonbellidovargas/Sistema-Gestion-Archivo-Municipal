@@ -5,9 +5,9 @@ import { XCircleIcon } from '@heroicons/react/solid';
 import Modal from '@common/Modal';
 import FormPrestamo from '@components/FormPrestamo';
 
-export default function TableArchivo({ archivos, handleDelete, setAlert }) {
+export default function TableArchivo({ archivos, handleDelete, setAlert, handleInfoClick, archivoPrestar, setArchivoPrestar }) {
   const [open, setOpen] = useState(false);
-  const [archivoPrestar, setArchivoPrestar] = useState({});
+
   return (
     <div className="flex flex-col">
       <div className="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
@@ -23,22 +23,7 @@ export default function TableArchivo({ archivos, handleDelete, setAlert }) {
                     Area
                   </th>
                   <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Folio
-                  </th>
-                  <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                     Año
-                  </th>
-                  <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Estado
-                  </th>
-                  <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Tipo
-                  </th>
-                  <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Ubicación
-                  </th>
-                  <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Observacion
                   </th>
                   <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                     Editar / Eliminar
@@ -49,34 +34,25 @@ export default function TableArchivo({ archivos, handleDelete, setAlert }) {
                 </tr>
               </thead>
               <tbody className="bg-white divide-y divide-gray-200">
-                {archivos.map((archivo) => (
-                  <tr key={`archivo-item-${archivo.titulo}`}>
+                {archivos?.map((archivo) => (
+                  <tr key={`archivo-item-${archivo?.titulo}`}>
                     <td className="w-72	px-6 py-4">
                       {/* si el texto es muy largo hacer salto de linea */}
-                      <div className="w-72 flex items-center">{archivo.titulo}</div>
+                      <div
+                        className="w-72 flex items-center hover:text-blue-800 cursor:pointer"
+                        onClick={() => {
+                          handleInfoClick(archivo);
+                        }}
+                      >
+                        {archivo?.titulo}
+                      </div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
-                      <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">{archivo.area.nombre}</span>
+                      <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">{archivo?.area?.nombre}</span>
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{archivo.folio}</td>
                     <td className="px-6 py-4 whitespace-nowrap">
                       <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">{archivo.año}</span>
                     </td>
-                    {archivo?.estado?.nombre === 'Bueno' ? (
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">{archivo?.estado?.nombre}</span>
-                      </td>
-                    ) : (
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">{archivo?.estado?.nombre}</span>
-                      </td>
-                    )}
-
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="text-sm text-gray-900">{archivo?.tipo?.nombre}</div>
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{archivo?.ubicacion}</td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{archivo?.observacion}</td>
                     <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                       <Link href={`/dashboard/editArchivo/${archivo.id}`} className="text-indigo-600 hover:text-indigo-900">
                         Editar ✏

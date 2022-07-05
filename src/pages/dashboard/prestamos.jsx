@@ -100,7 +100,7 @@ export default function Prestamos() {
                       Observaciones en Devolución
                     </th>
                     <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      Editar / Eliminar
+                      Editar | Eliminar
                     </th>
                   </tr>
                 </thead>
@@ -139,28 +139,25 @@ export default function Prestamos() {
                         </td>
                       )}
                       <td className="px-6 py-4 whitespace-nowrap">
-                        <div className="text-sm text-gray-900">{prestamo?.fechaDevolucion.split('T')[0]}</div>
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap">
                         <div className="text-sm text-gray-900">{prestamo?.observacionPrestamo}</div>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
                         <div className="text-sm text-gray-900">{prestamo?.observacionDevolucion}</div>
                       </td>
-                      {prestamo?.estado === 'prestado' ? (
-                        <td className="px-6 py-4 whitespace-nowrap text-left text-sm font-medium">
-                          <Link href={`/dashboard/editPrestamo/${prestamo.id}`} className="text-indigo-600 hover:text-indigo-900">
-                            Registrar Devolución
-                          </Link>
-                          <span className="text-indigo-600 hover:text-indigo-900">&nbsp;|&nbsp;</span>
-                          <XCircleIcon className="flex-shrink-0 h-6 w-6 text-red-400 cursor-pointer inline" aria-hidden="true" onClick={() => handleDelete(prestamo.id)} />
-                        </td>
-                      ) : (
-                        <td className="px-6 py-4 whitespace-nowrap text-left text-sm font-medium">
-                          Eliminar
-                          <XCircleIcon className="flex-shrink-0 h-6 w-6 text-red-400 cursor-pointer inline" aria-hidden="true" onClick={() => handleDelete(prestamo.id)} />
-                        </td>
-                      )}
+                      <td className="px-6 py-4 whitespace-nowrap text-left text-sm font-medium">
+                        {prestamo?.estado === 'prestado' && (
+                          <>
+                            <Link href={`/dashboard/editPrestamo/${prestamo.id}`} className="text-indigo-600 hover:text-indigo-900">
+                              <p className="text-blue-600 hover:text-black-900 inline font-semibold">Devolución</p>
+                            </Link>
+                            <span className="text-black-600 hover:text-black-900">&nbsp;|&nbsp;</span>
+                          </>
+                        )}
+                        <button onClick={() => handleDelete(prestamo.id)}>
+                          <p className="text-red-600 hover:text-black-900 inline font-semibold">Eliminar</p>
+                          <XCircleIcon className="flex-shrink-0 h-6 w-6 text-red-400 cursor-pointer inline" aria-hidden="true" />
+                        </button>
+                      </td>
                     </tr>
                   ))}
                 </tbody>

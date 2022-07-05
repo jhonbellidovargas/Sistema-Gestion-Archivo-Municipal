@@ -18,8 +18,7 @@ export const useAuth = () => {
 
 function useProvideAuth() {
   const [user, setUser] = useState(null);
-  const { user:usuario, setUser:setUsuario } = React.useContext(UsuarioContext);
-
+  const { setUser: setUsuario } = React.useContext(UsuarioContext);
 
   const signIn = async (username, password) => {
     const options = {
@@ -40,7 +39,6 @@ function useProvideAuth() {
       // guardamos en la cookie el token y usuario
       Cookie.set('token', token, { expires: 5 });
       Cookie.set('user', id, { expires: 5 });
-      console.log('tokencito', token);
       // enviamos el token a la api para que nos devuelva el usuario
       axios.defaults.headers.Authorization = `Bearer ${token}`;
       const { data: user } = await axios.get(endPoints.usuarios.getUsuario(id));
@@ -54,6 +52,7 @@ function useProvideAuth() {
     setUser(null);
     delete axios.defaults.headers.Authorization;
     window.location.href = '/login';
+    setUsuario(null);
   };
 
   // const getUser = () => {
