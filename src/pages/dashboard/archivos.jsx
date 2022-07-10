@@ -14,11 +14,13 @@ import InfoArchivo from '@components/InfoArchivo';
 import Paginate from '@components/Paginate';
 import Loading from '@common/Loading';
 import TableArchivo from '@components/TableArchivo';
+import { UsuarioContext } from '@hooks/TodoContext/';
 
 const PRODUCT_LIMIT = 5;
 const PRODUCT_OFFSET = 0;
 
 export default function Archivos() {
+  const { user } = React.useContext(UsuarioContext);
   const [open, setOpen] = useState(false);
   const [openSearchModal, setOpenSearchModal] = useState(false);
   const [openInfoModal, setOpenInfoModal] = useState(false);
@@ -103,7 +105,8 @@ export default function Archivos() {
 
   if (loading) {
     return <Loading />;
-  } else {
+  }
+  if (user?.rol === 'admin' || user?.rol === 'responsable') {
     return (
       <>
         <Alert alert={alert} handleClose={toggleAlert} />
@@ -197,5 +200,7 @@ export default function Archivos() {
         </Modal>
       </>
     );
+  } else {
+    return null;
   }
 }

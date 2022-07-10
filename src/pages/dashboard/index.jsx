@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useRouter } from 'next/router';
 import endPoints from '@services/api';
 import { Chart } from '@common/Chart';
 import { Chart2 } from '@common/Chart2';
@@ -15,6 +16,7 @@ import ThumbUpAltTwoTone from '@material-ui/icons/ThumbUpAltTwoTone';
 import CalendarTodayTwoTone from '@material-ui/icons/CalendarTodayTwoTone';
 
 export default function Dashboard() {
+  const router = useRouter();
   const [archivos, setArchivos] = useState([]);
   const [loading, setLoading] = useState(true);
   const [prestamos, setPrestamos] = useState([]);
@@ -126,7 +128,15 @@ export default function Dashboard() {
       <>
         <Grid item xs={12}>
           <Grid container spacing={gridSpacing}>
-            <Grid item lg={3} sm={6} xs={12}>
+            <Grid
+              item
+              lg={3}
+              sm={6}
+              xs={12}
+              onClick={() => {
+                router.push('dashboard/archivos');
+              }}
+            >
               <ReportCard
                 primary={archivosTotales}
                 secondary="Archivos Registrados"
@@ -136,7 +146,15 @@ export default function Dashboard() {
                 iconSecondary={DescriptionTwoTone}
               />
             </Grid>
-            <Grid item lg={3} sm={6} xs={12}>
+            <Grid
+              item
+              lg={3}
+              sm={6}
+              xs={12}
+              onClick={() => {
+                router.push('dashboard/prestamos');
+              }}
+            >
               <ReportCard
                 primary={prestamosVencidosTotales}
                 secondary="Prestamos vencidos"
@@ -145,7 +163,15 @@ export default function Dashboard() {
                 iconPrimary={CalendarTodayTwoTone}
               />
             </Grid>
-            <Grid item lg={3} sm={6} xs={12}>
+            <Grid
+              item
+              lg={3}
+              sm={6}
+              xs={12}
+              onClick={() => {
+                router.push('dashboard/prestamos');
+              }}
+            >
               <ReportCard
                 primary={prestamosTotales}
                 secondary="Prestamos en Total"
@@ -154,7 +180,15 @@ export default function Dashboard() {
                 iconPrimary={DescriptionTwoTone}
               />
             </Grid>
-            <Grid item lg={3} sm={6} xs={12}>
+            <Grid
+              item
+              lg={3}
+              sm={6}
+              xs={12}
+              onClick={() => {
+                router.push('dashboard/archivos');
+              }}
+            >
               <ReportCard primary={archivosDelAnio} secondary="Archivos de este año" color={theme.palette.primary.main} footerData="Archivadores del año" iconPrimary={ThumbUpAltTwoTone} />
             </Grid>
           </Grid>

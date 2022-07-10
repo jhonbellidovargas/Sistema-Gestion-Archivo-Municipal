@@ -1,3 +1,4 @@
+import React from 'react';
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { PlusIcon, XCircleIcon } from '@heroicons/react/solid';
@@ -10,8 +11,10 @@ import useAlert from '@hooks/useAlert';
 import Alert from '@common/Alert';
 import FormArea from '@components/FormArea';
 import Loading from '@common/Loading';
+import { UsuarioContext } from '@hooks/TodoContext/';
 
 export default function Areas() {
+  const { user } = React.useContext(UsuarioContext);
   const [open, setOpen] = useState(false);
   const [areas, setAreas] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -52,7 +55,8 @@ export default function Areas() {
   // console.log(areas);
   if (loading) {
     return <Loading />;
-  } else {
+  }
+  if (user?.rol === 'admin' || user?.rol === 'responsable') {
     return (
       <>
         <Alert alert={alert} handleClose={toggleAlert} />
@@ -120,5 +124,7 @@ export default function Areas() {
         </Modal>
       </>
     );
+  } else {
+    return null;
   }
 }

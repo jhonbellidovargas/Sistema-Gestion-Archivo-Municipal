@@ -1,14 +1,16 @@
 import { useState } from 'react';
 import EstadoStar from '@components/EstadoStar';
 import FormPrestamo from '@components/FormPrestamo';
+import FormEliminarArchivo from '@components/FormEliminarArchivo';
 
 import Modal from '@common/Modal';
 // import { ProductSchema } from 'schemas/ProductSchema';
 
 export default function FormArchivo({ archivo, handleDelete, archivoPrestar, setArchivoPrestar, setAlert }) {
   const [open, setOpen] = useState(false);
+  const [openDeleteModal, setOpenDeleteModal] = useState(false);
   return (
-    <div>
+    <div className="w-full">
       <div>
         <div className="p-0 bg-white shadow overflow-hidden sm:rounded-lg">
           <div className="px-1 py-1 sm:px-2">
@@ -81,7 +83,7 @@ export default function FormArchivo({ archivo, handleDelete, archivoPrestar, set
           <div className="px-6 py-3 bg-gray-50 text-left sm:px-6 inline-block">
             <button
               onClick={() => {
-                handleDelete(archivo.id);
+                setOpenDeleteModal(true);
               }}
               className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
             >
@@ -92,6 +94,9 @@ export default function FormArchivo({ archivo, handleDelete, archivoPrestar, set
       </div>
       <Modal open={open} setOpen={setOpen}>
         <FormPrestamo archivoPrestar={archivoPrestar} setOpen={setOpen} setAlert={setAlert} />
+      </Modal>
+      <Modal open={openDeleteModal} setOpen={setOpenDeleteModal}>
+        <FormEliminarArchivo archivo={archivo} setOpen={setOpen} setOpenDeleteModal={setOpenDeleteModal} setAlert={setAlert} handleDelete={handleDelete} />
       </Modal>
     </div>
   );

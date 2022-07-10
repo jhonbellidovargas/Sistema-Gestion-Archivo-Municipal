@@ -99,6 +99,7 @@ export default function FormUsuario({ setOpen, setAlert, usuario, trabajador }) 
               >
                 <option value="admin">admin</option>
                 <option value="responsable">responsable</option>
+                <option value="encargado">encargado</option>
               </select>
             </div>
             <div className="col-span-6 sm:col-span-3">

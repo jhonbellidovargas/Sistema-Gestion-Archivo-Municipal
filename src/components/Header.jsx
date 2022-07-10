@@ -8,7 +8,7 @@ import Image from 'next/image';
 
 import { UsuarioContext } from '@hooks/TodoContext/';
 
-const defauldNavigation = [
+const adminNavigation = [
   { name: 'Dashboard', href: '/dashboard/', current: true },
   { name: 'Archivos', href: '/dashboard/archivos/', current: false },
   { name: 'Prestamos', href: '/dashboard/prestamos/', current: false },
@@ -18,8 +18,21 @@ const defauldNavigation = [
   { name: 'Locales', href: '/dashboard/locales/', current: false },
   { name: 'Usuarios', href: '/dashboard/usuarios/', current: false },
 ];
-const navigation = defauldNavigation;
-
+const responsableNavigation = [
+  { name: 'Dashboard', href: '/dashboard/', current: true },
+  { name: 'Archivos', href: '/dashboard/archivos/', current: false },
+  { name: 'Prestamos', href: '/dashboard/prestamos/', current: false },
+  { name: 'Trabajadores', href: '/dashboard/trabajadores/', current: false },
+  { name: 'Areas', href: '/dashboard/areas/', current: false },
+  { name: 'Gerencias', href: '/dashboard/gerencias/', current: false },
+  { name: 'Locales', href: '/dashboard/locales/', current: false },
+];
+const encargadoNavigation = [
+  { name: 'Dashboard', href: '/dashboard/', current: true },
+  { name: 'Prestamos', href: '/dashboard/prestamos/', current: false },
+  { name: 'Trabajadores', href: '/dashboard/trabajadores/', current: false },
+];
+let navigation = [];
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ');
 }
@@ -27,11 +40,21 @@ function classNames(...classes) {
 export default function Header() {
   const { user, loading } = React.useContext(UsuarioContext);
   const auth = useAuth();
+
   const userData = {
     rol: user?.rol,
     email: user?.email,
     imageUrl: `https://ui-avatars.com/api/?name=${user?.email}&background=random&color=random`,
   };
+  if (user?.rol === 'encargado') {
+    navigation = encargadoNavigation;
+  }
+  if (user?.rol === 'responsable') {
+    navigation = responsableNavigation;
+  }
+  if (user?.rol === 'admin') {
+    navigation = adminNavigation;
+  }
 
   if (loading) {
     return (
@@ -58,7 +81,6 @@ export default function Header() {
       </>
     );
   }
-
   if (!user) {
     return (
       <>

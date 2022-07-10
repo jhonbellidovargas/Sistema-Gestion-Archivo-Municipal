@@ -12,6 +12,7 @@ import { UsuarioContext } from '@hooks/TodoContext/';
 import Alert from '@common/Alert';
 import FormUsuario from '@components/FormUsuario';
 
+
 export default function Usuarios() {
   const { user } = React.useContext(UsuarioContext);
   const [open, setOpen] = useState(false);
@@ -148,14 +149,6 @@ export default function Usuarios() {
       </>
     );
   } else {
-    return (
-      <>
-        <div className="lg:flex lg:items-center lg:justify-between mb-8">
-          <div className="flex-1 min-w-0">
-            <h2 className="text-2xl font-bold leading-7 text-gray-900 sm:text-3xl sm:truncate">No tienes permiso para esta sección</h2>
-          </div>
-        </div>
-      </>
-    );
+    return null;
   }
 }
