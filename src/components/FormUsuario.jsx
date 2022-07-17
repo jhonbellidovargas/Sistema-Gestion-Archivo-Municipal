@@ -53,7 +53,7 @@ export default function FormUsuario({ setOpen, setAlert, usuario, trabajador }) 
             active: true,
             message: `${data.email} agregado ✅`,
             type: 'success',
-            autoClose: false,
+            autoClose: true,
           });
           setOpen(false);
         })
@@ -62,7 +62,7 @@ export default function FormUsuario({ setOpen, setAlert, usuario, trabajador }) 
             active: true,
             message: `${data.email} no agregado ❌ ${error.message}`,
             type: 'error',
-            autoClose: false,
+            autoClose: true,
           });
           setOpen(false);
         });

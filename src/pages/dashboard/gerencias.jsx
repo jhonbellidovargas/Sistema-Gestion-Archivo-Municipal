@@ -37,7 +37,7 @@ export default function Gerencias() {
           active: true,
           message: 'Gerencia Eliminada!',
           type: 'success',
-          autoClose: false,
+          autoClose: true,
         });
       })
       .catch((error) => {
@@ -45,7 +45,7 @@ export default function Gerencias() {
           active: true,
           message: error.message,
           type: 'error',
-          autoClose: false,
+          autoClose: true,
         });
       });
   };

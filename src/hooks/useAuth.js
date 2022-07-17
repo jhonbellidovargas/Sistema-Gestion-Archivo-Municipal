@@ -54,6 +54,16 @@ function useProvideAuth() {
     window.location.href = '/login';
     setUsuario(null);
   };
+  const recoveryPassword = async (email) => {
+    const options = {
+      Headers: {
+        accept: '*/*',
+        'Content-Type': 'application/json',
+      },
+    };
+    const { data } = await axios.post(endPoints.auth.recovery, { email }, options);
+    return data;
+  };
 
   // const getUser = () => {
   //   async function getUser() {
@@ -75,5 +85,6 @@ function useProvideAuth() {
     user,
     signIn,
     logout,
+    recoveryPassword,
   };
 }

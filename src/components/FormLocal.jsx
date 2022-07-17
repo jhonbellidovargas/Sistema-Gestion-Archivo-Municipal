@@ -27,7 +27,7 @@ export default function FormUsuario({ setOpen, setAlert, local }) {
             active: true,
             message: `Local ${data.nombre} agregado ✅`,
             type: 'success',
-            autoClose: false,
+            autoClose: true,
           });
           setOpen(false);
         })
@@ -36,7 +36,7 @@ export default function FormUsuario({ setOpen, setAlert, local }) {
             active: true,
             message: `${data.email} no agregado ❌ ${error.message}`,
             type: 'error',
-            autoClose: false,
+            autoClose: true,
           });
           setOpen(false);
         });

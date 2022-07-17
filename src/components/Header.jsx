@@ -10,6 +10,7 @@ import { UsuarioContext } from '@hooks/TodoContext/';
 
 const adminNavigation = [
   { name: 'Dashboard', href: '/dashboard/', current: true },
+  { name: 'Documentos', href: '/dashboard/documentos/', current: false },
   { name: 'Archivos', href: '/dashboard/archivos/', current: false },
   { name: 'Prestamos', href: '/dashboard/prestamos/', current: false },
   { name: 'Trabajadores', href: '/dashboard/trabajadores/', current: false },
@@ -20,6 +21,7 @@ const adminNavigation = [
 ];
 const responsableNavigation = [
   { name: 'Dashboard', href: '/dashboard/', current: true },
+  { name: 'Documentos', href: '/dashboard/documentos/', current: false },
   { name: 'Archivos', href: '/dashboard/archivos/', current: false },
   { name: 'Prestamos', href: '/dashboard/prestamos/', current: false },
   { name: 'Trabajadores', href: '/dashboard/trabajadores/', current: false },
@@ -29,6 +31,7 @@ const responsableNavigation = [
 ];
 const encargadoNavigation = [
   { name: 'Dashboard', href: '/dashboard/', current: true },
+  { name: 'Documentos', href: '/dashboard/documentos/', current: false },
   { name: 'Prestamos', href: '/dashboard/prestamos/', current: false },
   { name: 'Trabajadores', href: '/dashboard/trabajadores/', current: false },
 ];

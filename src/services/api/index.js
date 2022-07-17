@@ -5,6 +5,8 @@ const endPoints = {
   auth: {
     login: `${API}/api/${VERSION}/auth/login`,
     profile: `${API}/api/${VERSION}/auth/profile`,
+    recovery: `${API}/api/${VERSION}/auth/recovery`,
+    changepassword: `${API}/api/${VERSION}/auth/change-password`,
   },
   trabajadores: {
     getTrabajador: (id) => `${API}/api/${VERSION}/trabajadores/${id}/`,
@@ -69,6 +71,21 @@ const endPoints = {
     addArchivo: `${API}/api/${VERSION}/archivos`,
     updateArchivo: (id) => `${API}/api/${VERSION}/archivos/${id}/`,
     deleteArchivo: (id) => `${API}/api/${VERSION}/archivos/${id}/`,
+  },
+  documentos: {
+    getDocumento: (id) => `${API}/api/${VERSION}/documentos/${id}/`,
+    allDocumentos: `${API}/api/${VERSION}/documentos/`,
+    limitDocumentos: (limit, offset) => `${API}/api/${VERSION}/documentos?limit=${limit}&offset=${offset}`,
+    addDocumento: `${API}/api/${VERSION}/documentos`,
+    updateDocumento: (id) => `${API}/api/${VERSION}/documentos/${id}/`,
+    deleteDocumento: (id) => `${API}/api/${VERSION}/documentos/${id}/`,
+  },
+  documentosEliminados: {
+    getDocumentoEliminado: (id) => `${API}/api/${VERSION}/documentosEliminados/${id}/`,
+    allDocumentosEliminados: `${API}/api/${VERSION}/documentosEliminados/`,
+    addDocumentoEliminado: `${API}/api/${VERSION}/documentosEliminados`,
+    updateDocumentoEliminado: (id) => `${API}/api/${VERSION}/documentosEliminados/${id}/`,
+    deleteDocumentoEliminado: (id) => `${API}/api/${VERSION}/documentosEliminados/${id}/`,
   },
   files: {
     addImage: `${API}/api/${VERSION}/files/upload/`,

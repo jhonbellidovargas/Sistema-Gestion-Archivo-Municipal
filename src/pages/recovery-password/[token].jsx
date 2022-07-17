@@ -1,32 +1,57 @@
-import { useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/router';
+import axios from 'axios';
+import endPoints from '@services/api';
+import useAlert from '@hooks/useAlert';
+import Alert from '@common/Alert';
 import { LockClosedIcon } from '@heroicons/react/solid';
-import { useAuth } from '@hooks/useAuth';
 
-export default function LoginPage() {
-  const emailRef = useRef(null);
+export default function Edit() {
   const passwordRef = useRef(null);
-  const auth = useAuth();
+  const passwordConfirmRef = useRef(null);
+  const { alert, setAlert, toggleAlert } = useAlert([]);
+  const [token, setToken] = useState('');
   const router = useRouter();
+
+  useEffect(() => {
+    const { token } = router.query;
+    setToken(token);
+  }, [router.query]);
 
   const submitHandler = (event) => {
     event.preventDefault();
-    const username = emailRef.current.value;
     const password = passwordRef.current.value;
-    console.log(username, password);
-    auth
-      .signIn(username, password)
-      .then(() => {
-        router.push('/dashboard');
-        //window.location.href = '/dashboard';
+    const passwordConfirm = passwordConfirmRef.current.value;
+    if (password !== passwordConfirm) {
+      setAlert({
+        active: true,
+        message: 'Las contraseñas no coinciden',
+        type: 'error',
+        autoClose: true,
+      });
+      return;
+    }
+    console.log(token);
+    axios
+      .post(endPoints.auth.changepassword, {
+        newPassword: password,
+        token,
       })
       .then(() => {
-        console.log('login');
+        setAlert({
+          active: true,
+          message: 'Contraseña cambiada correctamente',
+          type: 'success',
+          autoClose: true,
+        });
       })
       .catch((error) => {
-        console.log(error);
-        // muestra de error de id mensajeError
-        document.getElementById('mensajeError').innerHTML = 'Usuario o contraseña incorrectos';
+        setAlert({
+          active: true,
+          message: error,
+          type: 'error',
+          autoClose: true,
+        });
       });
   };
 
@@ -36,58 +61,40 @@ export default function LoginPage() {
         <div className="max-w-md w-full space-y-8">
           <div>
             <img className="mx-auto h-12 w-auto" src="https://tailwindui.com/img/logos/workflow-mark-indigo-600.svg" alt="Workflow" />
-            <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">Iniciar Sesión</h2>
+            <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">Cambiar Contraseña</h2>
           </div>
-          <div className="text-red-500 text-center">
-            <p id="mensajeError"></p>
-          </div>
+          <Alert alert={alert} handleClose={toggleAlert} />
           <form className="mt-8 space-y-6" onSubmit={submitHandler}>
             <input type="hidden" name="remember" defaultValue="true" />
             <div className="rounded-md shadow-sm -space-y-px">
               <div>
-                <label htmlFor="email-address" className="sr-only">
-                  Email
-                </label>
-                <input
-                  id="email-address"
-                  name="email"
-                  type="email"
-                  autoComplete="email"
-                  required
-                  className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-                  placeholder="Email"
-                  ref={emailRef}
-                />
-              </div>
-              <div>
                 <label htmlFor="password" className="sr-only">
-                  Contraseña
+                  Nueva Contraseña
                 </label>
                 <input
                   id="password"
                   name="password"
                   type="password"
-                  autoComplete="current-password"
                   required
-                  className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-                  placeholder="Contraseña"
+                  className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                  placeholder="Nueva Contraseña"
                   ref={passwordRef}
                 />
               </div>
-            </div>
-
-            <div className="flex items-center justify-between">
-              <div className="flex items-center">
-                <input id="remember-me" name="remember-me" type="checkbox" className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded" />
-                <label htmlFor="remember-me" className="ml-2 block text-sm text-gray-900">
-                  Mantener sesión iniciada
+              <div>
+                <label htmlFor="password2" className="sr-only">
+                  Confirmar Contraseña
                 </label>
-              </div>
-
-              <div className="text-sm">
-                <a href="/recovery" className="font-medium text-indigo-600 hover:text-indigo-500">
-                  ¿Olvidaste tu contraseña?
-                </a>
+                <input
+                  id="password2"
+                  name="password2"
+                  type="password2"
+                  autoComplete="current-password"
+                  required
+                  className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                  placeholder="Repetir Contraseña"
+                  ref={passwordConfirmRef}
+                />
               </div>
             </div>
 

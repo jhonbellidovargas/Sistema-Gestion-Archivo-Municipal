@@ -1,32 +1,37 @@
 import { useRef } from 'react';
-import { useRouter } from 'next/router';
 import { LockClosedIcon } from '@heroicons/react/solid';
 import { useAuth } from '@hooks/useAuth';
+import useAlert from '@hooks/useAlert';
+import Alert from '@common/Alert';
 
-export default function LoginPage() {
+export default function RecoveryPage() {
   const emailRef = useRef(null);
-  const passwordRef = useRef(null);
   const auth = useAuth();
-  const router = useRouter();
+  const { alert, setAlert, toggleAlert } = useAlert([]);
 
   const submitHandler = (event) => {
     event.preventDefault();
-    const username = emailRef.current.value;
-    const password = passwordRef.current.value;
-    console.log(username, password);
+    const email = emailRef.current.value;
     auth
-      .signIn(username, password)
+      .recoveryPassword(email)
       .then(() => {
-        router.push('/dashboard');
-        //window.location.href = '/dashboard';
+        setAlert({
+          active: true,
+          message: 'Se ha enviado un correo para restablecer la contraseña',
+          type: 'success',
+          autoClose: true,
+        });
       })
       .then(() => {
         console.log('login');
       })
-      .catch((error) => {
-        console.log(error);
-        // muestra de error de id mensajeError
-        document.getElementById('mensajeError').innerHTML = 'Usuario o contraseña incorrectos';
+      .catch(() => {
+        setAlert({
+          active: true,
+          message: 'Error al enviar el correo',
+          type: 'error',
+          autoClose: true,
+        });
       });
   };
 
@@ -36,11 +41,10 @@ export default function LoginPage() {
         <div className="max-w-md w-full space-y-8">
           <div>
             <img className="mx-auto h-12 w-auto" src="https://tailwindui.com/img/logos/workflow-mark-indigo-600.svg" alt="Workflow" />
-            <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">Iniciar Sesión</h2>
+            <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">Revisa tu correo y sigue las instrucciones</h2>
+            <p  className="mt-6 text-center">Te enviaremos un enlace a tu correo para que puedas cambiar la contraseña</p>
           </div>
-          <div className="text-red-500 text-center">
-            <p id="mensajeError"></p>
-          </div>
+          <Alert alert={alert} handleClose={toggleAlert} />
           <form className="mt-8 space-y-6" onSubmit={submitHandler}>
             <input type="hidden" name="remember" defaultValue="true" />
             <div className="rounded-md shadow-sm -space-y-px">
@@ -58,36 +62,6 @@ export default function LoginPage() {
                   placeholder="Email"
                   ref={emailRef}
                 />
-              </div>
-              <div>
-                <label htmlFor="password" className="sr-only">
-                  Contraseña
-                </label>
-                <input
-                  id="password"
-                  name="password"
-                  type="password"
-                  autoComplete="current-password"
-                  required
-                  className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-                  placeholder="Contraseña"
-                  ref={passwordRef}
-                />
-              </div>
-            </div>
-
-            <div className="flex items-center justify-between">
-              <div className="flex items-center">
-                <input id="remember-me" name="remember-me" type="checkbox" className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded" />
-                <label htmlFor="remember-me" className="ml-2 block text-sm text-gray-900">
-                  Mantener sesión iniciada
-                </label>
-              </div>
-
-              <div className="text-sm">
-                <a href="/recovery" className="font-medium text-indigo-600 hover:text-indigo-500">
-                  ¿Olvidaste tu contraseña?
-                </a>
               </div>
             </div>
 

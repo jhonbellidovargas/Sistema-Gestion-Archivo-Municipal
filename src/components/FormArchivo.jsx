@@ -55,7 +55,7 @@ export default function FormArchivo({ setOpen, setAlert, archivo }) {
             active: true,
             message: `${data.titulo} agregado ✅`,
             type: 'success',
-            autoClose: false,
+            autoClose: true,
           });
           setOpen(false);
         })
@@ -64,7 +64,7 @@ export default function FormArchivo({ setOpen, setAlert, archivo }) {
             active: true,
             message: `${data.titulo} no agregado ❌ ${error.message}`,
             type: 'error',
-            autoClose: false,
+            autoClose: true,
           });
           setOpen(false);
         });

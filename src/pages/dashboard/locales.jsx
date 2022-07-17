@@ -37,7 +37,7 @@ export default function Locales() {
           active: true,
           message: 'Local Eliminado!',
           type: 'success',
-          autoClose: false,
+          autoClose: true,
         });
       })
       .catch((error) => {
@@ -45,7 +45,7 @@ export default function Locales() {
           active: true,
           message: error.message,
           type: 'error',
-          autoClose: false,
+          autoClose: true,
         });
       });
   };

@@ -39,7 +39,7 @@ export default function FormArea({ setOpen, setAlert, area }) {
             active: true,
             message: `${data.nombre} agregado ✅`,
             type: 'success',
-            autoClose: false,
+            autoClose: true,
           });
           setOpen(false);
         })
@@ -48,7 +48,7 @@ export default function FormArea({ setOpen, setAlert, area }) {
             active: true,
             message: `${data.nombre} no agregado ❌ ${error.message}`,
             type: 'error',
-            autoClose: false,
+            autoClose: true,
           });
           setOpen(false);
         });

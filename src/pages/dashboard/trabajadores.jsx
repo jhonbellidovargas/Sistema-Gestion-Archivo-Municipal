@@ -40,7 +40,7 @@ export default function Archivos() {
           active: true,
           message: 'Trabajador Eliminado!',
           type: 'success',
-          autoClose: false,
+          autoClose: true,
         });
       })
       .catch((error) => {
@@ -48,7 +48,7 @@ export default function Archivos() {
           active: true,
           message: error.message,
           type: 'error',
-          autoClose: false,
+          autoClose: true,
         });
       });
   };

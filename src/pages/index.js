@@ -3,12 +3,6 @@ import React from 'react';
 import Image from 'next/image';
 import { UsuarioContext } from '@hooks/TodoContext/';
 
-// const navigation = [
-//   { name: 'Product', href: '#' },
-//   { name: 'Features', href: '#' },
-//   { name: 'Marketplace', href: '#' },
-//   { name: 'Company', href: '#' },
-// ];
 export default function Home() {
   const { user } = React.useContext(UsuarioContext);
   return (

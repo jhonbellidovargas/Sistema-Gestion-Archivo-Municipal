@@ -6,9 +6,7 @@ import FormEliminarArchivo from '@components/FormEliminarArchivo';
 import Modal from '@common/Modal';
 // import { ProductSchema } from 'schemas/ProductSchema';
 
-export default function FormArchivo({ archivo, handleDelete, archivoPrestar, setArchivoPrestar, setAlert }) {
-  const [open, setOpen] = useState(false);
-  const [openDeleteModal, setOpenDeleteModal] = useState(false);
+export default function FormArchivo({ archivo, handleDelete, setOpen }) {
   return (
     <div className="w-full">
       <div>
@@ -70,20 +68,18 @@ export default function FormArchivo({ archivo, handleDelete, archivoPrestar, set
             </a>
           </div>
           <div className="px-6 py-3 bg-gray-50 text-left sm:px-6 inline-block">
-            <button
-              onClick={() => {
-                setOpen(true);
-                setArchivoPrestar(archivo);
-              }}
+            <a
+              href={`/dashboard/archivos/${archivo.id}`}
               className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
             >
-              Prestar
-            </button>
+              Listar Documentos
+            </a>
           </div>
           <div className="px-6 py-3 bg-gray-50 text-left sm:px-6 inline-block">
             <button
               onClick={() => {
-                setOpenDeleteModal(true);
+                handleDelete(archivo.id);
+                setOpen(false);
               }}
               className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
             >
@@ -92,12 +88,6 @@ export default function FormArchivo({ archivo, handleDelete, archivoPrestar, set
           </div>
         </div>
       </div>
-      <Modal open={open} setOpen={setOpen}>
-        <FormPrestamo archivoPrestar={archivoPrestar} setOpen={setOpen} setAlert={setAlert} />
-      </Modal>
-      <Modal open={openDeleteModal} setOpen={setOpenDeleteModal}>
-        <FormEliminarArchivo archivo={archivo} setOpen={setOpen} setOpenDeleteModal={setOpenDeleteModal} setAlert={setAlert} handleDelete={handleDelete} />
-      </Modal>
     </div>
   );
 }
