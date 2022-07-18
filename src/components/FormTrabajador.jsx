@@ -24,7 +24,6 @@ export default function FormTrabajador({ setOpen, setAlert, trabajador }) {
     event.preventDefault();
     const formData = new FormData(formRef.current);
     const data = {
-      dni: parseInt(formData.get('dni')),
       nombre: formData.get('nombre'),
       apellido: formData.get('apellido'),
       direccion: formData.get('direccion'),
