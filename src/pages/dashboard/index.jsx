@@ -18,6 +18,7 @@ import CalendarTodayTwoTone from '@material-ui/icons/CalendarTodayTwoTone';
 export default function Dashboard() {
   const router = useRouter();
   const [archivos, setArchivos] = useState([]);
+  const [documentos, setDocumentos] = useState([]);
   const [loading, setLoading] = useState(true);
   const [prestamos, setPrestamos] = useState([]);
   const colorList = ['#50AF95', '#16ad10', '#2a71d0', '#c0c0c0', '#f3ba2f', '#713b91', '#6ab1d1', '#e7322c', '#cf3374', '#2b1bb6'];
@@ -30,9 +31,14 @@ export default function Dashboard() {
       const response = await axios.get(endPoints.prestamos.allPrestamos);
       setPrestamos(response.data);
     }
+    async function getDocumentos() {
+      const response = await axios.get(endPoints.documentos.allDocumentos);
+      setDocumentos(response.data);
+    }
     try {
       getArchivos();
       getPrestamos();
+      getDocumentos();
     } catch (error) {
       // console.log(error);
     }
@@ -42,6 +48,7 @@ export default function Dashboard() {
   const areas = archivos?.map((archivo) => archivo.area);
   const tipos = archivos?.map((archivo) => archivo.tipo);
   const areasCount = areas?.map((area) => area.nombre);
+  const documentosCount = documentos.length;
   const tiposCount = tipos?.map((tipo) => tipo.nombre);
   const añosCount = archivos?.map((archivo) => archivo.año);
   const fechasCount = prestamos?.map((prestamo) => prestamo.fechaPrestamo.split('-')[0]);
@@ -186,10 +193,10 @@ export default function Dashboard() {
               sm={6}
               xs={12}
               onClick={() => {
-                router.push('dashboard/archivos');
+                router.push('dashboard/documentos');
               }}
             >
-              <ReportCard primary={archivosDelAnio} secondary="Archivos de este año" color={theme.palette.primary.main} footerData="Archivadores del año" iconPrimary={ThumbUpAltTwoTone} />
+              <ReportCard primary={documentosCount} secondary="Documentos" color={theme.palette.primary.main} footerData="En total" iconPrimary={DescriptionTwoTone} />
             </Grid>
           </Grid>
         </Grid>

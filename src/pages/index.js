@@ -24,7 +24,7 @@ export default function Home() {
                 <span className="block xl:inline">Sistema de Gestión de Archivo Municipal</span> <span className="block text-indigo-600 xl:inline">Municipalidad Distrital de Luis Carranza</span>
               </h1>
               <p className="mt-3 text-base text-gray-500 sm:mt-5 sm:text-lg sm:max-w-xl sm:mx-auto md:mt-5 md:text-xl lg:mx-0">
-                Gestiona Archivos, Prestamos de Documentos, Registra trabajadores, Oficinas, Areas y Gerencias
+                Gestiona Archivos, Documentos, Prestamos de Documentos, Registra trabajadores, Oficinas, Areas y Gerencias
               </p>
               <div className="mt-5 sm:mt-8 sm:flex sm:justify-center lg:justify-center">
                 {!user && (

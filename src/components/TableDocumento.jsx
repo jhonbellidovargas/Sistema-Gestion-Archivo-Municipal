@@ -5,7 +5,7 @@ import { XCircleIcon } from '@heroicons/react/solid';
 import Modal from '@common/Modal';
 import FormPrestamo from '@components/FormPrestamo';
 
-export default function TableDocumento({ documentos, handleDelete, setAlert, handleInfoClick, documentoPrestar, setDocumentoPrestar }) {
+export default function TableDocumento({ documentos, setAlert, handleInfoClick, documentoPrestar, setDocumentoPrestar }) {
   const [open, setOpen] = useState(false);
 
   return (
@@ -39,10 +39,10 @@ export default function TableDocumento({ documentos, handleDelete, setAlert, han
               <tbody className="bg-white divide-y divide-gray-200">
                 {documentos?.map((documento) => (
                   <tr key={`documento-item-${documento?.titulo}`}>
-                    <td className="w-72	px-6 py-4">
+                    <td className="w-72	px-6 py-4 whitespace-normal">
                       {/* si el texto es muy largo hacer salto de linea */}
                       <div
-                        className="w-72 flex items-center hover:text-blue-800 cursor:pointer"
+                        className="whitespace-normal w-72 flex items-center hover:text-blue-800 cursor:pointer"
                         onClick={() => {
                           handleInfoClick(documento);
                         }}
@@ -50,7 +50,7 @@ export default function TableDocumento({ documentos, handleDelete, setAlert, han
                         {documento?.nombreDocumento}
                       </div>
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
+                    <td className="w-72	px-6 py-4">
                       <div className="w-72 flex items-center">{documento?.archivo.titulo}</div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
