@@ -119,7 +119,7 @@ export default function Documentos() {
                 onClick={() => setOpen(true)}
               >
                 <PlusIcon className="-ml-1 mr-2 h-5 w-5" aria-hidden="true" />
-                Agregar Archivo
+                Agregar Documento
               </button>
             </span>
           </div>
@@ -130,7 +130,7 @@ export default function Documentos() {
             <div className="flex items-center justify-between">
               <div className="flex-1 min-w-0">
                 <div className="flex items-center">
-                  <input id="inputSearch" onChange={onSearchValueChange} className="form-input block w-full pl-8 sm:text-sm sm:leading-5 rounded-lg" placeholder="Buscar Archivo" />
+                  <input id="inputSearch" onChange={onSearchValueChange} className="form-input block w-full pl-8 sm:text-sm sm:leading-5 rounded-lg" placeholder="Buscar Documento" />
                 </div>
               </div>
               <div className="ml-3 flex-shrink-0">
